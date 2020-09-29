@@ -16,9 +16,10 @@ class CreateLotsTable extends Migration
         Schema::create('lots', function (Blueprint $table) {
             $table->id();
             $table->string('lot_number');
-            $table->foreignId('id_product');
+            $table->foreignId('id_product')->constrained('products');
             $table->date('expiration_date');
             $table->double('price', 9, 2);
+            $table->unique(['lot_number', 'id_product']);
             $table->timestamps();
         });
     }

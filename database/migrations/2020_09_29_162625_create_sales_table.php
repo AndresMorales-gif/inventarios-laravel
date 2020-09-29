@@ -15,7 +15,7 @@ class CreateSalesTable extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->string('number_invoice');
+            $table->string('number_invoice')->unique();
             $table->string('state');
             $table->double('price', 10, 2);
             $table->timestamps();
