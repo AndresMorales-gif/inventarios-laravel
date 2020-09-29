@@ -61,6 +61,19 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="role" class="col-md-4 col-form-label text-md-right">Rol:</label>
+
+                            <div class="col-md-6">
+                                <input id="password-confirm" list="role-l" class="form-control" name="role" id="role">
+                                <datalist id="role-l">
+                                    <option value="admin"></option>
+                                    <option value="cliente"></option>
+                                    <option value="proveedor"></option>
+                                </datalist>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
