@@ -1,18 +1,18 @@
 <template>
-    <div class="content-form-products">
+    <div class="content-form">
         <form @submit.prevent="addProduct">
         	<div class="element-form">
         		<label>Nombre del producto:</label>
         		<input @keyup="availableProduct" type="text" name="name" placeholder="Nombre del producto" v-model="product.name">
         	</div>
-        	<div class="message-product" v-if="this.messageName">
+        	<div class="message" v-if="this.messageName">
         		<span>{{ this.messageName }}</span>
         	</div>
         	<div class="element-form">
         		<label>Descripcion del producto:</label>
         		<textarea name="description" id="description" cols="30" rows="10" v-model="product.description"></textarea>        		
         	</div>
-        	<div class="message-product" v-if="this.message">
+        	<div class="message" v-if="this.message">
         		<span>{{ this.message }}</span>
         	</div>
         	<div class="element-form">
@@ -66,7 +66,10 @@
 			          this.available = res.data.data;
 			          if (this.available) {
 			          	this.messageName = 'Nombre no disponible';
-			          }			          
+			          }
+                      else{
+                        this.messageName = '';
+                      } 			          
 			        });
 			        
     		}

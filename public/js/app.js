@@ -2014,6 +2014,8 @@ __webpack_require__.r(__webpack_exports__);
 
         if (_this2.available) {
           _this2.messageName = 'Nombre no disponible';
+        } else {
+          _this2.messageName = '';
         }
       });
     }
@@ -2088,6 +2090,131 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Component mounted.');
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/provider/LotsComponent.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/provider/LotsComponent.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      available: false,
+      message: '',
+      messageLot: '',
+      products: [],
+      lot: {
+        product: '',
+        lotNumber: '',
+        expiration: '',
+        price: '',
+        quantity: ''
+      }
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/product').then(function (res) {
+      _this.products = res.data;
+    });
+  },
+  methods: {
+    addLot: function addLot() {
+      var _this2 = this;
+
+      if (this.lot.product.trim() === '' || this.lot.lotNumber.trim() === '' || this.lot.expiration.trim() === '' || this.lot.price.trim() === '' || this.lot.quantity.trim() === '') {
+        this.message = 'Debes completar todos los campos antes de guardar';
+        return;
+      }
+
+      if (this.available) {
+        this.messageLot = 'Lote no disponible';
+        return;
+      }
+
+      var params = {
+        product: this.lot.product,
+        lotNumber: this.lot.lotNumber,
+        expiration: this.lot.expiration,
+        price: this.lot.price,
+        quantity: this.lot.quantity
+      };
+      this.lot.product = '';
+      this.lot.lotNumber = '';
+      this.lot.expiration = '';
+      this.lot.price = '';
+      this.lot.quantity = '';
+      axios.post('/lot', params).then(function (res) {
+        _this2.message = res.data.data;
+      })["catch"](function (err) {
+        _this2.message = 'No se ha podido guardar el lote';
+      });
+    },
+    availableLot: function availableLot() {
+      var _this3 = this;
+
+      var params = {
+        product: this.lot.product,
+        lotNumber: this.lot.lotNumber
+      };
+      axios.post('/lot/available', params).then(function (res) {
+        _this3.available = res.data.data;
+
+        if (_this3.available) {
+          _this3.messageLot = 'Lote no disponible';
+        } else {
+          _this3.messageLot = '';
+        }
+      });
+    }
   }
 });
 
@@ -37722,7 +37849,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "content-form-products" }, [
+  return _c("div", { staticClass: "content-form" }, [
     _c(
       "form",
       {
@@ -37765,7 +37892,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         this.messageName
-          ? _c("div", { staticClass: "message-product" }, [
+          ? _c("div", { staticClass: "message" }, [
               _c("span", [_vm._v(_vm._s(this.messageName))])
             ])
           : _vm._e(),
@@ -37801,7 +37928,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         this.message
-          ? _c("div", { staticClass: "message-product" }, [
+          ? _c("div", { staticClass: "message" }, [
               _c("span", [_vm._v(_vm._s(this.message))])
             ])
           : _vm._e(),
@@ -37904,6 +38031,212 @@ var staticRenderFns = [
           ])
         ])
       ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/provider/LotsComponent.vue?vue&type=template&id=442a35a8&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/provider/LotsComponent.vue?vue&type=template&id=442a35a8& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "content-form" }, [
+    _c(
+      "form",
+      {
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.addLot($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "element-form" }, [
+          _c("label", [_vm._v("Producto:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.lot.product,
+                expression: "lot.product"
+              }
+            ],
+            attrs: { list: "product-l", name: "product" },
+            domProps: { value: _vm.lot.product },
+            on: {
+              click: _vm.availableLot,
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.lot, "product", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "datalist",
+            { attrs: { id: "product-l" } },
+            _vm._l(_vm.products, function(item, index) {
+              return _c("option", { domProps: { value: item.id } }, [
+                _vm._v(_vm._s(item.name))
+              ])
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "element-form" }, [
+          _c("label", [_vm._v("Numero de lote:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.lot.lotNumber,
+                expression: "lot.lotNumber"
+              }
+            ],
+            attrs: {
+              type: "text",
+              name: "lotNumber",
+              placeholder: "Numero de lote"
+            },
+            domProps: { value: _vm.lot.lotNumber },
+            on: {
+              keyup: _vm.availableLot,
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.lot, "lotNumber", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        this.messageLot
+          ? _c("div", { staticClass: "message" }, [
+              _c("span", [_vm._v(_vm._s(this.messageLot))])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "element-form" }, [
+          _c("label", [_vm._v("Fecha de expiracion:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.lot.expiration,
+                expression: "lot.expiration"
+              }
+            ],
+            attrs: { type: "date", name: "expiration" },
+            domProps: { value: _vm.lot.expiration },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.lot, "expiration", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "element-form" }, [
+          _c("label", [_vm._v("Precio:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.lot.price,
+                expression: "lot.price"
+              }
+            ],
+            attrs: { type: "number", name: "price", placeholder: "Precio" },
+            domProps: { value: _vm.lot.price },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.lot, "price", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "element-form" }, [
+          _c("label", [_vm._v("Cantidad:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.lot.quantity,
+                expression: "lot.quantity"
+              }
+            ],
+            attrs: {
+              type: "number",
+              name: "quantity",
+              placeholder: "Cantidad"
+            },
+            domProps: { value: _vm.lot.quantity },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.lot, "quantity", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        this.message
+          ? _c("div", { staticClass: "message" }, [
+              _c("span", [_vm._v(_vm._s(this.message))])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm._m(0)
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "element-form" }, [
+      _c("button", { attrs: { type: "submit" } }, [_vm._v("Enviar")])
     ])
   }
 ]
@@ -50104,6 +50437,7 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 Vue.component('home-component', __webpack_require__(/*! ./components/home/HomeComponent.vue */ "./resources/js/components/home/HomeComponent.vue")["default"]);
 Vue.component('form-product-component', __webpack_require__(/*! ./components/admin/FormProductsComponent.vue */ "./resources/js/components/admin/FormProductsComponent.vue")["default"]);
 Vue.component('list-product-component', __webpack_require__(/*! ./components/admin/ProductsComponent.vue */ "./resources/js/components/admin/ProductsComponent.vue")["default"]);
+Vue.component('form-lot-component', __webpack_require__(/*! ./components/provider/LotsComponent.vue */ "./resources/js/components/provider/LotsComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -50432,6 +50766,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeComponent_vue_vue_type_template_id_6caa5fce___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_HomeComponent_vue_vue_type_template_id_6caa5fce___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/provider/LotsComponent.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/provider/LotsComponent.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LotsComponent_vue_vue_type_template_id_442a35a8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LotsComponent.vue?vue&type=template&id=442a35a8& */ "./resources/js/components/provider/LotsComponent.vue?vue&type=template&id=442a35a8&");
+/* harmony import */ var _LotsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LotsComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/provider/LotsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LotsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LotsComponent_vue_vue_type_template_id_442a35a8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LotsComponent_vue_vue_type_template_id_442a35a8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/provider/LotsComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/provider/LotsComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/provider/LotsComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LotsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LotsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/provider/LotsComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LotsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/provider/LotsComponent.vue?vue&type=template&id=442a35a8&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/provider/LotsComponent.vue?vue&type=template&id=442a35a8& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LotsComponent_vue_vue_type_template_id_442a35a8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LotsComponent.vue?vue&type=template&id=442a35a8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/provider/LotsComponent.vue?vue&type=template&id=442a35a8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LotsComponent_vue_vue_type_template_id_442a35a8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LotsComponent_vue_vue_type_template_id_442a35a8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
