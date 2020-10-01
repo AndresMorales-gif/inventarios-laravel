@@ -16,6 +16,7 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->string('number_invoice')->unique();
+            $table->foreignId('id_user')->constrained('users');
             $table->string('state');
             $table->double('price', 10, 2);
             $table->timestamps();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use App\Models\Lot;
+use App\Models\Sale_detail;
 use Illuminate\Http\Request;
 
 class LotController extends Controller
@@ -15,7 +16,10 @@ class LotController extends Controller
      */
     public function index()
     {
-        //
+        $lots = Lot::select('lots.id' , 'lots.lot_number', 'products.name','lots.expiration_date', 'lots.price')
+            ->leftjoin('products', 'lots.id_product', '=', 'products.id')
+            ->get();      
+       return $lots;
     }
 
     /**
@@ -107,5 +111,12 @@ class LotController extends Controller
             $data = true;    
         }
         return response()->json(['success' => true, 'data' => $data], 200);
+    }
+
+    public function lotSale(Request $request)
+    {
+        $sale = Sale_detail::find($request->idSale);
+        $lot = Lot::find($sale->id_lot);
+        return response()->json(['success' => true, 'lot' => $lot, 'quantity' => $sale->quantity], 200);
     }
 }

@@ -24,6 +24,9 @@ Vue.component('home-component', require('./components/home/HomeComponent.vue').d
 Vue.component('form-product-component', require('./components/admin/FormProductsComponent.vue').default);
 Vue.component('list-product-component', require('./components/admin/ProductsComponent.vue').default);
 Vue.component('form-lot-component', require('./components/provider/LotsComponent.vue').default);
+Vue.component('form-sale-component', require('./components/customer/FormSalesComponent.vue').default);
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

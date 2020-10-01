@@ -2062,6 +2062,298 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/customer/FormSalesComponent.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/customer/FormSalesComponent.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      saleId: '',
+      edit: false,
+      idDetail: '',
+      message: '',
+      messageLot: '',
+      messageQuantity: '',
+      newDetails: true,
+      available: false,
+      newSale: false,
+      saleDetail: {
+        lot: '',
+        quantity: ''
+      },
+      inventories: [],
+      lots: [],
+      sales: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/lot').then(function (res) {
+      _this.lots = res.data;
+    });
+  },
+  methods: {
+    addSaleDetail: function addSaleDetail() {
+      var _this2 = this;
+
+      if (this.saleDetail.lot.trim() === '' || this.saleDetail.quantity.trim() === '') {
+        this.message = 'Debes completar todos los campos antes de enviar';
+        return;
+      }
+
+      if (this.available) {
+        this.messageLot = 'Ya estas usando este lote, editalo';
+        return;
+      }
+
+      var params = {
+        type: 'saleDetail',
+        lot: this.lots[this.saleDetail.lot].id,
+        sale: this.saleId,
+        quantity: this.saleDetail.quantity,
+        price: this.lots[this.saleDetail.lot].price
+      };
+      this.saleDetail.lot = '';
+      this.saleDetail.quantity = '';
+
+      if (this.edit) {
+        params['idSale'] = this.idDetail;
+        axios.post('/saleEdit', params).then(function (res) {
+          _this2.idDetail = '';
+          _this2.edit = false;
+          _this2.message = res.data.data;
+
+          _this2.salesI();
+        });
+      } else {
+        axios.post('/sale', params).then(function (res) {
+          _this2.message = res.data.data;
+
+          _this2.salesI();
+        });
+      }
+    },
+    availableLot: function availableLot() {
+      var _this3 = this;
+
+      var params = {
+        sale: this.saleId,
+        lot: this.lots[this.saleDetail.lot].id
+      };
+      axios.post('/sale/available', params).then(function (res) {
+        _this3.available = res.data.data;
+
+        if (_this3.available) {
+          _this3.messageLot = 'Ya estas usando este lote, editalo';
+        } else {
+          _this3.messageLot = '';
+        }
+      });
+
+      if (!(this.saleDetail.lot.trim() === '' || this.saleDetail.quantity.trim() === '')) {
+        var _params = {
+          quantity: this.saleDetail.quantity,
+          lot: this.lots[this.saleDetail.lot].id
+        };
+        axios.post('/sale/availableQuantity', _params).then(function (res) {
+          _this3.available = res.data.data;
+
+          if (_this3.available) {
+            _this3.messageQuantity = 'Cantidad insuficiente en el inventario, use otro lote';
+          } else {
+            _this3.messageQuantity = '';
+          }
+        });
+      }
+    },
+    salesI: function salesI() {
+      var _this4 = this;
+
+      var params = {
+        sale: this.saleId
+      };
+      axios.post('/sale/sale', params).then(function (res) {
+        _this4.sales = res.data;
+      });
+    },
+    addNewSale: function addNewSale() {
+      var _this5 = this;
+
+      var params = {
+        type: 'sale'
+      };
+      axios.post('/sale', params).then(function (res) {
+        _this5.newSale = true;
+        _this5.saleId = res.data.data;
+      });
+    },
+    editSaleDetail: function editSaleDetail(id) {
+      var _this6 = this;
+
+      this.idDetail = id;
+      var params = {
+        idSale: this.idDetail
+      };
+      this.edit = true;
+      axios.post('/lot/sale', params).then(function (res) {
+        _this6.saleDetail.quantity = res.data.quantity;
+      });
+    },
+    delSaleDetail: function delSaleDetail(id) {
+      var _this7 = this;
+
+      var params = {
+        idSale: id
+      };
+      axios.post('/saleDelete', params).then(function (res) {
+        _this7.message = res.data.data;
+
+        _this7.salesI();
+      });
+    },
+    viewInventory: function viewInventory() {
+      var _this8 = this;
+
+      var params = {
+        sale: this.saleId
+      };
+      axios.post('/sale/inventory', params).then(function (res) {
+        _this8.inventories = res.data;
+        _this8.newDetails = false;
+      });
+    },
+    invoice: function invoice() {
+      var _this9 = this;
+
+      var params = {
+        sale: this.saleId
+      };
+      var id = this.saleId;
+      axios.post('/sale/invoice', params).then(function (res) {
+        _this9.saleId = '';
+        _this9.sales = [];
+        _this9.newSale = false;
+        window.location.href = '/sale/pdfInvoice/' + id;
+      });
+    },
+    cancel: function cancel() {
+      var _this10 = this;
+
+      var params = {
+        sale: this.saleId
+      };
+      axios.post('/sale/cancel', params).then(function (res) {
+        _this10.saleId = '';
+        _this10.sales = [];
+        _this10.newSale = false;
+      });
+    },
+    viewTable: function viewTable() {
+      this.newDetails = true;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/HomeComponent.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/home/HomeComponent.vue?vue&type=script&lang=js& ***!
@@ -37995,6 +38287,311 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/customer/FormSalesComponent.vue?vue&type=template&id=598c0f2b&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/customer/FormSalesComponent.vue?vue&type=template&id=598c0f2b& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "content-sale" }, [
+    this.newSale
+      ? _c("div", { staticClass: "content-invoice-form" }, [
+          this.newDetails
+            ? _c("div", { staticClass: "content-invoice" }, [
+                _c("div", { staticClass: "table-invoice" }, [
+                  _c(
+                    "table",
+                    [
+                      _vm._m(0),
+                      _vm._v(" "),
+                      _vm._l(_vm.sales, function(itemSale, indexSale) {
+                        return _c("tr", [
+                          _c("td", [_vm._v(_vm._s(itemSale.name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(itemSale.description))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(itemSale.lot_number))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(itemSale.expiration_date))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(itemSale.quantity))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(itemSale.price))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editSaleDetail(itemSale.id)
+                                  }
+                                }
+                              },
+                              [_vm._v("Editar")]
+                            ),
+                            _c(
+                              "button",
+                              {
+                                on: {
+                                  click: function($event) {
+                                    return _vm.delSaleDetail(itemSale.id)
+                                  }
+                                }
+                              },
+                              [_vm._v("Eliminar")]
+                            )
+                          ])
+                        ])
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "content-accions" }, [
+                  _c("button", { on: { click: _vm.viewInventory } }, [
+                    _vm._v("Ver inventario")
+                  ]),
+                  _vm._v(" "),
+                  _c("button", { on: { click: _vm.invoice } }, [
+                    _vm._v("Facturar")
+                  ]),
+                  _vm._v(" "),
+                  _c("button", { on: { click: _vm.cancel } }, [
+                    _vm._v("Cancelar")
+                  ])
+                ])
+              ])
+            : _c("div", [
+                _c("div", { staticClass: "table-invoice" }, [
+                  _c(
+                    "table",
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm._l(_vm.inventories, function(
+                        itemInventory,
+                        indexInventory
+                      ) {
+                        return _c("tr", [
+                          _c("td", [_vm._v(_vm._s(itemInventory.name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(itemInventory.lot_number))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(itemInventory.quantityI))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(itemInventory.quantityS))]),
+                          _vm._v(" "),
+                          itemInventory.quantityS
+                            ? _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    itemInventory.quantityI -
+                                      itemInventory.quantityS
+                                  )
+                                )
+                              ])
+                            : _c("td", [
+                                _vm._v(_vm._s(itemInventory.quantityI))
+                              ])
+                        ])
+                      })
+                    ],
+                    2
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "content-accions" }, [
+                  _c("button", { on: { click: _vm.viewTable } }, [
+                    _vm._v("Ver mis productos")
+                  ])
+                ])
+              ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "content-form" }, [
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.addSaleDetail($event)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "element-form" }, [
+                  _c("label", [_vm._v("Lote del producto:")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.saleDetail.lot,
+                        expression: "saleDetail.lot"
+                      }
+                    ],
+                    attrs: { list: "lot-l", name: "lot" },
+                    domProps: { value: _vm.saleDetail.lot },
+                    on: {
+                      change: _vm.availableLot,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.saleDetail, "lot", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "datalist",
+                    { attrs: { id: "lot-l" } },
+                    _vm._l(_vm.lots, function(item, index) {
+                      return _c("option", { domProps: { value: index } }, [
+                        _vm._v(
+                          "Producto: " +
+                            _vm._s(item.name) +
+                            " Numero de lote: " +
+                            _vm._s(item.lot_number) +
+                            " Precio: " +
+                            _vm._s(item.price) +
+                            " Fecha de expiracion: " +
+                            _vm._s(item.expiration_date)
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ]),
+                _vm._v(" "),
+                this.messageLot
+                  ? _c("div", { staticClass: "message" }, [
+                      _c("span", [_vm._v(_vm._s(this.messageLot))])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "element-form" }, [
+                  _c("label", [_vm._v("Cantidad:")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.saleDetail.quantity,
+                        expression: "saleDetail.quantity"
+                      }
+                    ],
+                    attrs: {
+                      type: "number",
+                      name: "quantity",
+                      placeholder: "Cantidad"
+                    },
+                    domProps: { value: _vm.saleDetail.quantity },
+                    on: {
+                      keyup: _vm.availableLot,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.saleDetail,
+                          "quantity",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                this.messageQuantity
+                  ? _c("div", { staticClass: "message" }, [
+                      _c("span", [_vm._v(_vm._s(this.messageQuantity))])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                this.message
+                  ? _c("div", { staticClass: "message" }, [
+                      _c("span", [_vm._v(_vm._s(this.message))])
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm._m(2)
+              ]
+            )
+          ])
+        ])
+      : _c("div", { staticClass: "content-new-sale" }, [
+          _c("button", { on: { click: _vm.addNewSale } }, [
+            _vm._v("Nueva compra")
+          ])
+        ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Producto")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Descripcion")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Numero de lote")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Fecha de vencimiento")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Cantidad")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Precio")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Opciones")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Producto")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Nuemro de lote")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Cantidad inventario")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Cantidad pedido")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Inventario total")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "element-form" }, [
+      _c("button", { attrs: { type: "submit" } }, [_vm._v("Enviar")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/home/HomeComponent.vue?vue&type=template&id=6caa5fce&":
 /*!*********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/home/HomeComponent.vue?vue&type=template&id=6caa5fce& ***!
@@ -50438,6 +51035,7 @@ Vue.component('home-component', __webpack_require__(/*! ./components/home/HomeCo
 Vue.component('form-product-component', __webpack_require__(/*! ./components/admin/FormProductsComponent.vue */ "./resources/js/components/admin/FormProductsComponent.vue")["default"]);
 Vue.component('list-product-component', __webpack_require__(/*! ./components/admin/ProductsComponent.vue */ "./resources/js/components/admin/ProductsComponent.vue")["default"]);
 Vue.component('form-lot-component', __webpack_require__(/*! ./components/provider/LotsComponent.vue */ "./resources/js/components/provider/LotsComponent.vue")["default"]);
+Vue.component('form-sale-component', __webpack_require__(/*! ./components/customer/FormSalesComponent.vue */ "./resources/js/components/customer/FormSalesComponent.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -50702,6 +51300,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/customer/FormSalesComponent.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/customer/FormSalesComponent.vue ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FormSalesComponent_vue_vue_type_template_id_598c0f2b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormSalesComponent.vue?vue&type=template&id=598c0f2b& */ "./resources/js/components/customer/FormSalesComponent.vue?vue&type=template&id=598c0f2b&");
+/* harmony import */ var _FormSalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormSalesComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/customer/FormSalesComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FormSalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FormSalesComponent_vue_vue_type_template_id_598c0f2b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FormSalesComponent_vue_vue_type_template_id_598c0f2b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/customer/FormSalesComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/customer/FormSalesComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/customer/FormSalesComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormSalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./FormSalesComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/customer/FormSalesComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormSalesComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/customer/FormSalesComponent.vue?vue&type=template&id=598c0f2b&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/customer/FormSalesComponent.vue?vue&type=template&id=598c0f2b& ***!
+  \************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormSalesComponent_vue_vue_type_template_id_598c0f2b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./FormSalesComponent.vue?vue&type=template&id=598c0f2b& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/customer/FormSalesComponent.vue?vue&type=template&id=598c0f2b&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormSalesComponent_vue_vue_type_template_id_598c0f2b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_FormSalesComponent_vue_vue_type_template_id_598c0f2b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/home/HomeComponent.vue":
 /*!********************************************************!*\
   !*** ./resources/js/components/home/HomeComponent.vue ***!
@@ -50858,8 +51525,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Xampp\htdocs\inventarioBRM\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Xampp\htdocs\inventarioBRM\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\inventarioBRM\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\inventarioBRM\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
